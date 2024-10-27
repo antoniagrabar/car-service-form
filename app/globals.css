@@ -2,20 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "satoshi", sans-serif;
+}
+
+@layer utilities {
+  .h1 {
+    @apply text-[42px] font-normal;
+  }
+
+  .h2-regular {
+    @apply text-[32px] font-normal;
+  }
+
+  .h2-bold {
+    @apply text-[32px] font-bold;
+  }
+
+  .h3-regular {
+    @apply text-[24px] font-normal;
+  }
+
+  .h3-medium {
+    @apply text-[24px] font-medium;
+  }
+
+  .h3-bold {
+    @apply text-[24px] font-bold;
+  }
+
+  .h4-regular {
+    @apply text-[18px] font-normal;
+  }
+
+  .h4-medium {
+    @apply text-[18px] font-medium;
+  }
+
+  .h4-bold {
+    @apply text-[18px] font-bold;
+  }
+
+  .h5-regular {
+    @apply text-[16px] font-normal;
+  }
+
+  .h5-medium {
+    @apply text-[16px] font-medium;
+  }
+
+  .h6-regular {
+    @apply text-[14px] font-normal;
+  }
 }

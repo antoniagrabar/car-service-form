@@ -16,7 +16,7 @@ body {
   }
 
   .h2-bold {
-    @apply text-[32px] font-bold;
+    @apply text-[32px] font-bold leading-[41.6px];
   }
 
   .h3-regular {
@@ -32,7 +32,7 @@ body {
   }
 
   .h4-regular {
-    @apply text-[18px] font-normal;
+    @apply text-[18px] font-normal leading-[25.2px];
   }
 
   .h4-medium {
@@ -53,5 +53,21 @@ body {
 
   .h6-regular {
     @apply text-[14px] font-normal;
+  }
+
+  .paragraph-regular {
+    @apply text-[16px] font-normal leading-[24px];
+  }
+
+  .paragraph-medium {
+    @apply text-[16px] font-medium;
+  }
+
+  .btn-primary {
+    @apply bg-primary-100 text-base-600 rounded-sm gap-[5px] py-[5px] px-[15px] border-none hover:bg-primary-200 focus:bg-primary-200;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent text-base-100 rounded-sm gap-[10px] py-[5px] px-[15px];
   }
 }

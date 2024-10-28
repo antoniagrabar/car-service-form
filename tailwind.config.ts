@@ -17,12 +17,19 @@ const config: Config = {
           100: "#1c1c1c",
           200: "#585757",
           300: "#969696",
+          600: "#ffffff",
         },
         light: {
           100: "#fefefe",
           200: "#f8f8f8",
           300: "#efefef",
         },
+      },
+      borderRadius: {
+        sm: "3px",
+      },
+      screens: {
+        xs: "440px",
       },
       fontFamily: {
         satoshi: ["var(--font-satoshi)"],

@@ -40,19 +40,19 @@ body {
   }
 
   .h4-bold {
-    @apply text-[18px] font-bold;
+    @apply text-[18px] font-bold leading-[27px];
   }
 
   .h5-regular {
-    @apply text-[16px] font-normal;
+    @apply text-[16px] font-normal leading-[24px];
   }
 
   .h5-medium {
-    @apply text-[16px] font-medium;
+    @apply text-[16px] font-medium leading-[24px];
   }
 
   .h6-regular {
-    @apply text-[14px] font-normal;
+    @apply text-[14px] font-normal leading-[19.6px];
   }
 
   .paragraph-regular {
@@ -63,11 +63,19 @@ body {
     @apply text-[16px] font-medium;
   }
 
+  .validation-error {
+    @apply text-[14px] font-normal text-error mr-0.5;
+  }
+
   .btn-primary {
     @apply bg-primary-100 text-base-600 rounded-sm gap-[5px] py-[5px] px-[15px] border-none hover:bg-primary-200 focus:bg-primary-200;
   }
 
   .btn-secondary {
     @apply bg-transparent text-base-100 rounded-sm gap-[10px] py-[5px] px-[15px];
+  }
+
+  .border-radio-checkbox {
+    @apply border border-base-300 hover:ring-4 hover:ring-base-300/30 disabled:border-gray-400 disabled:ring-0;
   }
 }

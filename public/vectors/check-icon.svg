@@ -1,0 +1,3 @@
+<svg className="absolute w-4 h-4 pointer-events-none hidden peer-checked:block stroke-white mt-1 outline-none" width="12" height="10" viewBox="0 0 12 10" fill="white" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.0492 0.927933C11.6412 1.50735 11.6515 2.45704 11.0721 3.04913L4.45483 9.81108L0.86816 5.6868C0.324535 5.06169 0.390591 4.11424 1.0157 3.57061C1.64081 3.02699 2.58826 3.09304 3.13188 3.71816L4.58486 5.38892L8.92795 0.950872C9.50737 0.358785 10.4571 0.348515 11.0492 0.927933Z" fill="white"/>
+</svg>

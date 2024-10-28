@@ -5,7 +5,7 @@ import Button from "@/components/shared/Button";
 
 const page = () => {
   return (
-    <div className="bg-light-100 m-auto flex items-center justify-center max-2xl:h-[calc(100vh-120px)]">
+    <div className="m-auto flex items-center justify-center max-2xl:h-[calc(100vh-120px)]">
       <div className="flex w-[600px] flex-col items-center justify-center gap-5 2xl:pt-[314px]">
         <Image
           src="/vectors/tools-and-utensils.svg"

@@ -17,6 +17,7 @@ const config: Config = {
           100: "#1c1c1c",
           200: "#585757",
           300: "#969696",
+          500: "#0000000A",
           600: "#ffffff",
         },
         light: {
@@ -24,6 +25,7 @@ const config: Config = {
           200: "#f8f8f8",
           300: "#efefef",
         },
+        error: "#EF4147",
       },
       borderRadius: {
         sm: "3px",

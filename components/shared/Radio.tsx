@@ -2,7 +2,15 @@ import React from "react";
 
 import { RadioProps } from "@/types";
 
-const Radio = ({ disabled, id, label, name, onChange, value }: RadioProps) => (
+const Radio = ({
+  disabled,
+  id,
+  label,
+  name,
+  onChange,
+  value,
+  ...props
+}: RadioProps) => (
   <div className="flex gap-2 items-start">
     <div className="grid place-items-center mt-1">
       <input
@@ -15,6 +23,7 @@ const Radio = ({ disabled, id, label, name, onChange, value }: RadioProps) => (
             border-radio-checkbox disabled:border-gray-400"
         onChange={onChange}
         value={value}
+        {...props}
       />
       <div
         className={`

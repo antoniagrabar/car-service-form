@@ -27,12 +27,6 @@ const serviceFormSchema = z.object({
     .max(15, {
       message: "Broj telefona ne smije prelaziti duljinu od 15 znakova.",
     }),
-  note: z
-    .string()
-    .min(5, { message: "Napomena mora imati minimalno 8 znakova." })
-    .max(1000, {
-      message: "Napomena ne smije prelaziti duljinu od 1000 znakova.",
-    }),
 });
 
 export default serviceFormSchema;

@@ -11,9 +11,12 @@ const RadioGroup = ({
   onChange,
   options,
   containerClasses,
+  selectedValue,
 }: RadioGroupProps) => {
   const handleChange = (event: React.FormEvent<HTMLInputElement>) =>
     onChange(event.currentTarget.value);
+
+  console.log(options, selectedValue);
 
   return (
     <div className={containerClasses}>
@@ -26,6 +29,7 @@ const RadioGroup = ({
             label={optionLabel}
             onChange={handleChange}
             value={value}
+            checked={selectedValue === value}
           />
         </div>
       ))}

@@ -29,6 +29,7 @@ const config: Config = {
       },
       borderRadius: {
         sm: "3px",
+        md: "10px",
       },
       screens: {
         xs: "440px",

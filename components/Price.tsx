@@ -8,28 +8,28 @@ import { Badge } from "./shared/Badge";
 import Button from "./shared/Button";
 import { Input } from "./shared/Input";
 
-import { PriceProps, Coupon, CouponInput } from "@/types";
+import { PriceProps, CouponInput } from "@/types";
 
-const Price = ({ totalPrice }: PriceProps) => {
+const Price = ({
+  totalPrice,
+  discountedPrice,
+  setDiscountedPrice,
+  coupon,
+  setCoupon,
+}: PriceProps) => {
   const [couponInput, setCouponInput] = useState<CouponInput>({
-    show: false,
     code: "",
     errorCause: "",
   });
-  const [coupon, setCoupon] = useState<Coupon>({
-    id: "",
-    code: "",
-    discountPercentage: 0,
-  });
-  const [discountedPrice, setDiscountedPrice] = useState<number>(totalPrice);
 
   useEffect(() => {
     const finalPrice =
       coupon.discountPercentage > 0
         ? totalPrice - (totalPrice * coupon.discountPercentage) / 100
         : totalPrice;
+
     setDiscountedPrice(finalPrice);
-  }, [totalPrice, coupon.discountPercentage]);
+  }, [totalPrice, coupon.discountPercentage, setDiscountedPrice]);
 
   const checkCouponValidity = async () => {
     try {
@@ -44,12 +44,14 @@ const Price = ({ totalPrice }: PriceProps) => {
       const data = await res.json();
 
       if (res.ok) {
-        setCoupon(data);
-        setCouponInput((prevCoupon) => ({
-          ...prevCoupon,
+        setCoupon({
+          ...data,
+          showInput: true,
+        });
+        setCouponInput({
           code: "",
           errorCause: "",
-        }));
+        });
       } else {
         setCouponInput((prevCoupon) => ({
           ...prevCoupon,
@@ -70,11 +72,12 @@ const Price = ({ totalPrice }: PriceProps) => {
   };
 
   const handleCouponRemove = () => {
-    setCoupon({
+    setCoupon((prev) => ({
+      ...prev,
       id: "",
       code: "",
       discountPercentage: 0,
-    });
+    }));
     setDiscountedPrice(totalPrice);
   };
 
@@ -86,7 +89,7 @@ const Price = ({ totalPrice }: PriceProps) => {
           {discountedPrice.toFixed(2)}€
         </h4>
       </div>
-      {couponInput.show ? (
+      {coupon.showInput ? (
         <div>
           <div className="flex gap-[10px]">
             <Input
@@ -126,9 +129,9 @@ const Price = ({ totalPrice }: PriceProps) => {
         <h5
           className="h5-regular text-primary-100 cursor-pointer"
           onClick={() =>
-            setCouponInput((prevCoupon) => ({
+            setCoupon((prevCoupon) => ({
               ...prevCoupon,
-              show: true,
+              showInput: true,
             }))
           }
         >

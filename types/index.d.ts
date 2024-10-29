@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 export type ButtonVariant = "primary" | "secondary";
 
@@ -44,9 +44,11 @@ export interface RadioGroupProps {
   onChange: (value: string) => void;
   options: RadioOptionType[];
   containerClasses?: string;
+  selectedValue?: string;
 }
 
-export interface RadioProps {
+export interface RadioProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   label: string;
   disabled?: boolean;
@@ -93,22 +95,31 @@ export interface ServiceFormValidationErrors {
   name: string[];
   email: string[];
   phone: string[];
-  note: string[];
-}
-
-export interface PriceProps {
-  totalPrice: number;
 }
 
 export type Coupon = {
   id: string;
   code: string;
   discountPercentage: number;
+  showInput: boolean;
 };
 
+export interface PriceProps {
+  totalPrice: number;
+  discountedPrice: number;
+  setDiscountedPrice: (value: number) => void;
+  coupon: Coupon;
+  setCoupon: Dispatch<SetStateAction<Coupon>>;
+}
+
 export type CouponInput = {
-  show: boolean;
   code: string;
   errorMessage?: string;
   errorCause?: string;
 };
+
+export interface ReviewProps {
+  formData: FormData;
+  discountedPrice: number;
+  setShowReview: Dispatch<SetStateAction<boolean>>;
+}

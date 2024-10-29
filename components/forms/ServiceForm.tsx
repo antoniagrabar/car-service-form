@@ -2,6 +2,7 @@
 
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 
+import Price from "../Price";
 import Button from "../shared/Button";
 import Checkbox from "../shared/Checkbox";
 import { Input } from "../shared/Input";
@@ -25,7 +26,7 @@ const ServiceForm = ({ manufacturers, services }: ServiceFormProps) => {
     phone: "",
     note: "",
   });
-
+  const [totalPrice, setTotalPrice] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
   const [validationErrors, setValidationErrors] =
     useState<ServiceFormValidationErrors>({
@@ -66,16 +67,23 @@ const ServiceForm = ({ manufacturers, services }: ServiceFormProps) => {
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    console.log(name, value);
   };
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { checked, id } = e.target;
 
+    console.log(checked, id);
+
     setFormData((prevData) => {
       const newServiceIds = checked
         ? [...prevData.serviceIds, id]
         : prevData.serviceIds.filter((serviceId) => serviceId !== id);
+
+      const newTotalPrice = services.reduce((sum, service) => {
+        return newServiceIds.includes(service.id) ? sum + service.price : sum;
+      }, 0);
+
+      setTotalPrice(newTotalPrice);
 
       return { ...prevData, serviceIds: newServiceIds };
     });
@@ -101,7 +109,7 @@ const ServiceForm = ({ manufacturers, services }: ServiceFormProps) => {
             containerClasses="grid grid-cols-3 gap-[10px]"
             options={manufacturers.map((manufacturer) => ({
               label: manufacturer.name,
-              value: manufacturer.id,
+              value: `radio-${manufacturer.id}`,
             }))}
             onChange={(id) =>
               setFormData((prevData) => ({ ...prevData, manufacturerId: id }))
@@ -138,13 +146,7 @@ const ServiceForm = ({ manufacturers, services }: ServiceFormProps) => {
             ))}
         </div>
 
-        <div className="bg-light-200 flex justify-between py-2.5 px-[15px]">
-          <div className="flex gap-2.5">
-            <h4 className="h4-regular">ukupno: </h4>
-            <h4 className="h4-bold text-primary-100">105,00€</h4>
-          </div>
-          <h5 className="h5-regular text-primary-100">Imam kupon</h5>
-        </div>
+        <Price totalPrice={totalPrice} />
 
         <h4 className="h4-bold text-primary-100">Vaši podaci</h4>
         <div className="grid grid-cols-2 w-full gap-5">

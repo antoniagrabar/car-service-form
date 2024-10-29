@@ -15,7 +15,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           id={id}
           type={type}
-          className={`${className} bg-base-500 appearance-none border border-base-500 rounded-sm text-[16px] font-medium leading-[24px] w-full pl-2.5 py-[5px] pr-[5px] text-base-100 focus:outline-none`}
+          className={`${className} bg-base-500 appearance-none border border-base-500 rounded-sm text-[16px] font-medium leading-[24px] w-full pl-2.5 py-[5px] pr-[5px] text-base-100 focus:outline-none placeholder:text-base-200 placeholder:h5-regular`}
           ref={ref}
           {...props}
         />

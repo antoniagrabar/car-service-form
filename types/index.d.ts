@@ -2,7 +2,10 @@ import React from "react";
 
 export type ButtonVariant = "primary" | "secondary";
 
+export type ButtonSize = "default" | "sm";
+
 export interface ButtonOptions {
+  size?: ButtonSize;
   variant?: ButtonVariant;
 }
 
@@ -92,3 +95,20 @@ export interface ServiceFormValidationErrors {
   phone: string[];
   note: string[];
 }
+
+export interface PriceProps {
+  totalPrice: number;
+}
+
+export type Coupon = {
+  id: string;
+  code: string;
+  discountPercentage: number;
+};
+
+export type CouponInput = {
+  show: boolean;
+  code: string;
+  errorMessage?: string;
+  errorCause?: string;
+};

@@ -26,7 +26,7 @@ const Radio = ({ disabled, id, label, name, onChange, value }: RadioProps) => (
     <label
       htmlFor={id}
       className="
-          text-start cursor-pointer disabled:text-gray-400"
+          text-start disabled:text-gray-400"
     >
       <h5 className="h5-regular">{label}</h5>
     </label>

@@ -18,7 +18,7 @@ const Checkbox = ({
         className="
           peer relative shrink-0 appearance-none w-4 h-4 rounded-sm bg-white 
           focus:outline-none border-radio-checkbox checked:bg-primary-100 
-           checked:border-0 disabled:bg-gray-300 
+          checked:border-0 disabled:bg-gray-300 
         "
         type="checkbox"
         defaultChecked={defaultChecked}

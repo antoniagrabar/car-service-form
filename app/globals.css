@@ -67,14 +67,6 @@ body {
     @apply text-[14px] font-normal text-error mr-0.5;
   }
 
-  .btn-primary {
-    @apply bg-primary-100 text-base-600 rounded-sm gap-[5px] py-[5px] px-[15px] border-none hover:bg-primary-200 focus:bg-primary-200;
-  }
-
-  .btn-secondary {
-    @apply bg-transparent text-base-100 rounded-sm gap-[10px] py-[5px] px-[15px];
-  }
-
   .border-radio-checkbox {
     @apply border border-base-300 hover:ring-4 hover:ring-base-300/30 disabled:border-gray-400 disabled:ring-0;
   }

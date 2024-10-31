@@ -12,9 +12,9 @@ export async function getManufacturers() {
     const body = await res.json();
 
     return body;
-  } catch (err) {
-    console.log(err);
-    return null;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Pogreška prilikom dohvaćanja dobavljača.");
   }
 }
 
@@ -32,6 +32,6 @@ export async function getServices() {
     return body;
   } catch (err) {
     console.log(err);
-    return null;
+    throw new Error("Pogreška prilikom dohvaćanja servisa.");
   }
 }

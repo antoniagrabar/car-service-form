@@ -16,7 +16,8 @@ const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
     const variantClasses = {
       primary:
         "bg-primary-100 text-base-600 rounded-sm gap-[5px] border-none hover:bg-primary-200 focus:bg-primary-200",
-      secondary: "bg-transparent text-base-100 rounded-sm gap-[10px]",
+      secondary:
+        "bg-transparent text-base-100 rounded-sm gap-[10px] border border-base-200 hover:bg-base-500 focus:bg-base-500",
     };
 
     const sizeClasses = {

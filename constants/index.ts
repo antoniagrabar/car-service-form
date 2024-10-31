@@ -3,18 +3,17 @@ import { ServiceFormValidationErrors, FormData, Coupon } from "@/types";
 export const initialValidationErrors: ServiceFormValidationErrors = {
   manufacturerId: [],
   serviceIds: [],
-  name: [],
+  fullName: [],
   email: [],
-  phone: [],
+  phoneNumber: [],
 };
 
 export const initialFormData: FormData = {
   manufacturerId: "",
   serviceIds: [],
-  promoCode: "",
-  name: "",
+  fullName: "",
   email: "",
-  phone: "",
+  phoneNumber: "",
   note: "",
 };
 

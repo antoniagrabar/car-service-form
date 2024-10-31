@@ -2,23 +2,27 @@ import React from "react";
 
 import Button from "./shared/Button";
 
+import { formatPrice } from "@/lib/utils";
 import { ReviewProps } from "@/types";
 
-const Review = ({ formData, discountedPrice, setShowReview }: ReviewProps) => {
-  console.log(formData, discountedPrice);
+const Review = ({
+  formData,
+  manufacturerName,
+  services,
+  discountedPrice,
+  discountPercentage,
+  totalPrice,
+  promoCode,
+  setShowReview,
+  handleSubmit,
+}: ReviewProps) => {
+  const contactFields = [
+    { label: "Ime i prezime:", value: formData.fullName },
+    { label: "Email adresa:", value: formData.email },
+    { label: "Broj telefona:", value: formData.phoneNumber },
+    { label: "Napomena:", value: formData.note },
+  ];
 
-  // post request
-  //   {
-  //     "manufacturerId": "string",
-  //     "serviceIds": [
-  //       "string"
-  //     ],
-  //     "promoCode": "string",
-  //     "fullName": "string",
-  //     "email": "user@example.com",
-  //     "phoneNumber": "string",
-  //     "note": "string"
-  //   }
   return (
     <>
       <div>
@@ -35,14 +39,71 @@ const Review = ({ formData, discountedPrice, setShowReview }: ReviewProps) => {
       <div className="bg-light-200 p-5 rounded-md flex flex-col gap-[15px]">
         <div className="flex flex-col gap-[5px]">
           <h4 className="h4-bold text-primary-100">Model vozila</h4>
-          <h5 className="h5-regular text-base-100">Peugeot</h5>
+          <h5 className="h5-regular text-base-100">{manufacturerName}</h5>
+        </div>
+        <div className="flex flex-col gap-[5px]">
+          <h4 className="h4-bold text-primary-100">Odabrane usluge</h4>
+          {services.map(
+            (service) =>
+              formData.serviceIds.includes(service.id) && (
+                <div
+                  key={service.id}
+                  className="flex justify-between p-[5px] border-b border-base-400"
+                >
+                  <h5 className="h5-regular text-base-100">{service.name}</h5>
+                  <h5 className="h5-regular text-base-100">
+                    {formatPrice(service.price)}
+                  </h5>
+                </div>
+              )
+          )}
+          {promoCode ? (
+            <div className="flex justify-end gap-[20px] pt-[5px] px-[5px]">
+              <h5 className="h5-regular text-base-200">
+                Popust {discountPercentage}%:
+              </h5>
+              <h5 className="h5-regular text-base-100">
+                -{formatPrice(totalPrice - discountedPrice)}
+              </h5>
+            </div>
+          ) : (
+            <></>
+          )}
+          <div className="flex justify-end gap-[20px] pt-[5px] px-[5px]">
+            <h5 className="h5-regular text-base-200">Ukupno:</h5>
+            <h5 className="h5-medium text-primary-100">
+              {formatPrice(discountedPrice)}
+            </h5>
+          </div>
+        </div>
+        <div>
+          <h4 className="h4-bold text-primary-100 mb-[5px]">Kontakt podaci</h4>
+          <div className="flex flex-col gap-[3px]">
+            {contactFields.map((field, index) => (
+              <div key={index} className="flex">
+                <h5 className="h5-regular text-base-200 w-[110px]">
+                  {field.label}
+                </h5>
+                <h5 className="h5-regular text-base-100">{field.value}</h5>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      <Button
-        onClick={() => {
-          setShowReview(false);
-        }}
-      />
+
+      <div className="flex gap-[20px] w-full">
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setShowReview(false);
+          }}
+        >
+          <h4 className="h4-regular text-base-100">Nazad</h4>
+        </Button>
+        <Button className="w-full" onClick={() => handleSubmit()}>
+          <h4 className="h4-regular text-base-600">Pošalji</h4>
+        </Button>
+      </div>
     </>
   );
 };

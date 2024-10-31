@@ -8,6 +8,7 @@ import { Badge } from "./shared/Badge";
 import Button from "./shared/Button";
 import { Input } from "./shared/Input";
 
+import { formatPrice } from "@/lib/utils";
 import { PriceProps, CouponInput } from "@/types";
 
 const Price = ({
@@ -86,7 +87,7 @@ const Price = ({
       <div className="flex gap-2.5">
         <h4 className="h4-regular">ukupno: </h4>
         <h4 className="h4-bold text-primary-100">
-          {discountedPrice.toFixed(2)}€
+          {formatPrice(discountedPrice)}
         </h4>
       </div>
       {coupon.showInput ? (

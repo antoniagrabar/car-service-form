@@ -16,8 +16,6 @@ const RadioGroup = ({
   const handleChange = (event: React.FormEvent<HTMLInputElement>) =>
     onChange(event.currentTarget.value);
 
-  console.log(options, selectedValue);
-
   return (
     <div className={containerClasses}>
       {options.map(({ label: optionLabel, value }) => (

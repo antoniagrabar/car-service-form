@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, FormEvent } from "react";
 
 export type ButtonVariant = "primary" | "secondary";
 
@@ -70,10 +70,9 @@ export interface CheckboxProps
 export interface FormData {
   manufacturerId: string;
   serviceIds: string[];
-  promoCode?: string;
-  name: string;
+  fullName: string;
   email: string;
-  phone: string;
+  phoneNumber: string;
   note?: string;
 }
 
@@ -92,9 +91,9 @@ export interface TextareaProps
 export interface ServiceFormValidationErrors {
   manufacturerId: string[];
   serviceIds: string[];
-  name: string[];
+  fullName: string[];
   email: string[];
-  phone: string[];
+  phoneNumber: string[];
 }
 
 export type Coupon = {
@@ -120,6 +119,17 @@ export type CouponInput = {
 
 export interface ReviewProps {
   formData: FormData;
+  manufacturerName: string;
+  services: Service[];
+  promoCode: string;
+  discountPercentage: number;
   discountedPrice: number;
+  totalPrice: number;
   setShowReview: Dispatch<SetStateAction<boolean>>;
+  handleSubmit: any;
+}
+
+export interface GetManufacturerNameProps {
+  manufacturers: Manufacturer[];
+  id: string;
 }

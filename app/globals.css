@@ -68,6 +68,6 @@ body {
   }
 
   .border-radio-checkbox {
-    @apply border border-base-300 hover:ring-4 hover:ring-base-300/30 disabled:border-gray-400 disabled:ring-0;
+    @apply border border-base-300 hover:ring hover:ring-base-300/20 disabled:border-gray-400 disabled:ring-0;
   }
 }

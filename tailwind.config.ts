@@ -17,6 +17,7 @@ const config: Config = {
           100: "#1c1c1c",
           200: "#585757",
           300: "#969696",
+          400: "#00000026",
           500: "#0000000A",
           600: "#ffffff",
         },
@@ -33,6 +34,7 @@ const config: Config = {
       },
       screens: {
         xs: "440px",
+        sm: "540px",
       },
       fontFamily: {
         satoshi: ["var(--font-satoshi)"],

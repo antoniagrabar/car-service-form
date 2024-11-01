@@ -1,15 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
-import { Badge } from "./shared/Badge";
-import Button from "./shared/Button";
-import { Input } from "./shared/Input";
+import { Badge } from "../../shared/Badge";
+import Button from "../../shared/Button";
+import { Input } from "../../shared/Input";
 
 import { formatPrice } from "@/lib/utils";
-import { PriceProps, CouponInput } from "@/types";
+import { PriceProps } from "@/types";
 
 const Price = ({
   totalPrice,
@@ -18,10 +18,8 @@ const Price = ({
   coupon,
   setCoupon,
 }: PriceProps) => {
-  const [couponInput, setCouponInput] = useState<CouponInput>({
-    code: "",
-    errorCause: "",
-  });
+  const [couponError, setCouponError] = useState<string>();
+  const couponInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const finalPrice =
@@ -33,9 +31,10 @@ const Price = ({
   }, [totalPrice, coupon.discountPercentage, setDiscountedPrice]);
 
   const checkCouponValidity = async () => {
+    const code = couponInputRef.current?.value;
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/validate-promo-code/${couponInput.code}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/validate-promo-code/${code}`,
         {
           method: "POST",
           headers: { "x-authentication-token": "borealis-fe-interview-token" },
@@ -45,31 +44,19 @@ const Price = ({
       const data = await res.json();
 
       if (res.ok) {
+        setCouponError("");
         setCoupon({
           ...data,
           showInput: true,
         });
-        setCouponInput({
-          code: "",
-          errorCause: "",
-        });
+        couponInputRef!.current!.value = ""; // Reset input value
       } else {
-        setCouponInput((prevCoupon) => ({
-          ...prevCoupon,
-          errorCause: data.cause,
-        }));
+        setCouponError(data.cause);
       }
     } catch (error) {
       console.log(error);
       toast.error("Nešto je pošlo po krivu. Molimo pokušajte ponovo.");
     }
-  };
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCouponInput((prevCoupon) => ({
-      ...prevCoupon,
-      code: e.target.value,
-    }));
   };
 
   const handleCouponRemove = () => {
@@ -94,10 +81,9 @@ const Price = ({
         <div>
           <div className="flex gap-[10px]">
             <Input
-              value={couponInput.code}
+              ref={couponInputRef}
               className="w-[155px]"
               placeholder="Unesi kod"
-              onChange={(e) => handleInputChange(e)}
             />
             <Button size="sm" onClick={() => checkCouponValidity()}>
               <Image
@@ -108,7 +94,9 @@ const Price = ({
               />
             </Button>
           </div>
-          <div className="validation-error">{couponInput.errorCause}</div>
+          {couponError !== "" && (
+            <div className="validation-error">{couponError}</div>
+          )}
           {coupon && coupon.code !== "" && (
             <Badge
               key={coupon.id}

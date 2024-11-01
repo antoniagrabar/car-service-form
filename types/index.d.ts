@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, FormEvent } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 export type ButtonVariant = "primary" | "secondary";
 
@@ -38,22 +38,12 @@ type RadioOptionType = {
   label: string;
 };
 
-export interface RadioGroupProps {
-  disabled?: boolean;
-  name: string;
-  onChange: (value: string) => void;
-  options: RadioOptionType[];
-  containerClasses?: string;
-  selectedValue?: string;
-}
-
 export interface RadioProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   label: string;
   disabled?: boolean;
   name?: string;
-  onChange?: (event: React.FormEvent<HTMLInputElement>) => void;
   value?: string;
 }
 
@@ -65,15 +55,6 @@ export interface CheckboxProps
   disabled?: boolean;
   defaultChecked?: boolean;
   onChange?: (event: React.FormEvent<HTMLInputElement>) => void;
-}
-
-export interface FormData {
-  manufacturerId: string;
-  serviceIds: string[];
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  note?: string;
 }
 
 export interface InputProps
@@ -94,6 +75,7 @@ export interface ServiceFormValidationErrors {
   fullName: string[];
   email: string[];
   phoneNumber: string[];
+  note: string[];
 }
 
 export type Coupon = {
@@ -117,16 +99,25 @@ export type CouponInput = {
   errorCause?: string;
 };
 
+export interface FormValues {
+  manufacturerId: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  note?: string;
+}
+
 export interface ReviewProps {
-  formData: FormData;
+  formValues: FormValues;
   manufacturerName: string;
   services: Service[];
+  serviceIds: string[];
   promoCode: string;
   discountPercentage: number;
   discountedPrice: number;
   totalPrice: number;
   setShowReview: Dispatch<SetStateAction<boolean>>;
-  handleSubmit: any;
+  handleSubmit: () => void;
 }
 
 export interface GetManufacturerNameProps {

@@ -1,4 +1,4 @@
-import ServiceForm from "@/components/forms/ServiceForm";
+import ServiceForm from "@/components/forms/serviceForm/ServiceForm";
 import { getManufacturers, getServices } from "@/lib/actions";
 
 const page = async () => {

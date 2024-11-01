@@ -1,10 +1,9 @@
 import * as z from "zod";
 
 const serviceFormSchema = z.object({
-  manufacturerId: z.string().min(1, { message: "Proizvođač je obavezan." }),
-  serviceIds: z
-    .array(z.string().min(1))
-    .min(1, { message: "Molimo odaberite barem jednu uslugu." }),
+  manufacturerId: z
+    .string({ required_error: "Proizvođač je obavezan." })
+    .min(1, { message: "Proizvođač je obavezan." }),
   email: z.string().email({
     message: "Molimo unesite valjan email.",
   }),

@@ -1,4 +1,4 @@
-import { ServiceFormValidationErrors, FormData, Coupon } from "@/types";
+import { ServiceFormValidationErrors, Coupon, FormValues } from "@/types";
 
 export const initialValidationErrors: ServiceFormValidationErrors = {
   manufacturerId: [],
@@ -6,11 +6,11 @@ export const initialValidationErrors: ServiceFormValidationErrors = {
   fullName: [],
   email: [],
   phoneNumber: [],
+  note: [],
 };
 
-export const initialFormData: FormData = {
+export const defaultFormValues: FormValues = {
   manufacturerId: "",
-  serviceIds: [],
   fullName: "",
   email: "",
   phoneNumber: "",

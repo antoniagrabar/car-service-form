@@ -6,9 +6,10 @@ import { formatPrice } from "@/lib/utils";
 import { ReviewProps } from "@/types";
 
 const Review = ({
-  formData,
+  formValues,
   manufacturerName,
   services,
+  serviceIds,
   discountedPrice,
   discountPercentage,
   totalPrice,
@@ -17,10 +18,10 @@ const Review = ({
   handleSubmit,
 }: ReviewProps) => {
   const contactFields = [
-    { label: "Ime i prezime:", value: formData.fullName },
-    { label: "Email adresa:", value: formData.email },
-    { label: "Broj telefona:", value: formData.phoneNumber },
-    { label: "Napomena:", value: formData.note },
+    { label: "Ime i prezime:", value: formValues.fullName },
+    { label: "Email adresa:", value: formValues.email },
+    { label: "Broj telefona:", value: formValues.phoneNumber },
+    { label: "Napomena:", value: formValues.note },
   ];
 
   return (
@@ -45,7 +46,7 @@ const Review = ({
           <h4 className="h4-bold text-primary-100">Odabrane usluge</h4>
           {services.map(
             (service) =>
-              formData.serviceIds.includes(service.id) && (
+              serviceIds.includes(service.id) && (
                 <div
                   key={service.id}
                   className="flex justify-between p-[5px] border-b border-base-400"

@@ -1,7 +1,7 @@
 "use server";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN;
+const BACKEND_URL = process.env.BACKEND_URL;
+const AUTH_TOKEN = process.env.AUTH_TOKEN;
 
 export const fetchData = async (
   endpoint: string,

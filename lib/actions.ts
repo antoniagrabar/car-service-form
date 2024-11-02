@@ -1,37 +1,33 @@
 "use server";
 
-export async function getManufacturers() {
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const AUTH_TOKEN = process.env.NEXT_PUBLIC_AUTH_TOKEN;
+
+export const fetchData = async (
+  endpoint: string,
+  method: string = "GET",
+  body?: Record<string, unknown>
+) => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/manufacturers`,
-      {
-        headers: { "x-authentication-token": "borealis-fe-interview-token" },
-      }
-    );
+    const options: RequestInit = {
+      method,
+      headers: {
+        "x-authentication-token": AUTH_TOKEN ?? "",
+        "Content-Type": "application/json",
+      },
+    };
 
-    const body = await res.json();
+    if (body) {
+      options.body = JSON.stringify(body);
+    }
 
-    return body;
+    const res = await fetch(`${BACKEND_URL}/api/${endpoint}`, options);
+    return await res.json();
   } catch (error) {
-    console.log(error);
-    throw new Error("Pogreška prilikom dohvaćanja dobavljača.");
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error(String(error));
+    }
   }
-}
-
-export async function getServices() {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/services`,
-      {
-        headers: { "x-authentication-token": "borealis-fe-interview-token" },
-      }
-    );
-
-    const body = await res.json();
-
-    return body;
-  } catch (err) {
-    console.log(err);
-    throw new Error("Pogreška prilikom dohvaćanja servisa.");
-  }
-}
+};

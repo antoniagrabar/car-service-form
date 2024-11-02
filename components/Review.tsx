@@ -1,7 +1,6 @@
 import React from "react";
 
-import Button from "./shared/Button";
-
+import Button from "@/components/shared/Button";
 import { formatPrice } from "@/lib/utils";
 import { ReviewProps } from "@/types";
 
@@ -15,7 +14,6 @@ const Review = ({
   totalPrice,
   promoCode,
   setShowReview,
-  handleSubmit,
 }: ReviewProps) => {
   const contactFields = [
     { label: "Ime i prezime:", value: formValues.fullName },
@@ -37,7 +35,7 @@ const Review = ({
           servis pritisnite gumb “Pošalji”.
         </h5>
       </div>
-      <div className="bg-light-200 p-5 rounded-md flex flex-col gap-[15px]">
+      <div className="bg-bg-200 p-5 rounded-md flex flex-col gap-[15px]">
         <div className="flex flex-col gap-[5px]">
           <h4 className="h4-bold text-primary-100">Model vozila</h4>
           <h5 className="h5-regular text-base-100">{manufacturerName}</h5>
@@ -95,15 +93,13 @@ const Review = ({
       <div className="flex gap-[20px] w-full">
         <Button
           variant="secondary"
+          label="Nazad"
           onClick={() => {
             setShowReview(false);
           }}
-        >
-          <h4 className="h4-regular text-base-100">Nazad</h4>
-        </Button>
-        <Button className="w-full" onClick={() => handleSubmit()}>
-          <h4 className="h4-regular text-base-600">Pošalji</h4>
-        </Button>
+        />
+
+        <Button type="submit" label="Pošalji" className="w-full" />
       </div>
     </>
   );

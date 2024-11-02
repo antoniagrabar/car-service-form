@@ -8,66 +8,72 @@ body {
 
 @layer utilities {
   .h1 {
-    @apply text-[42px] font-normal;
+    @apply text-[42px] font-normal leading-[1.1];
   }
 
   .h2-regular {
-    @apply text-[32px] font-normal;
+    @apply text-[32px] font-normal leading-[1.3];
   }
 
   .h2-bold {
-    @apply text-[32px] font-bold leading-[41.6px];
+    @apply text-[32px] font-bold leading-[1.3];
   }
 
   .h3-regular {
-    @apply text-[24px] font-normal;
+    @apply text-[24px] font-normal leading-[1.4];
   }
 
   .h3-medium {
-    @apply text-[24px] font-medium;
-  }
-
-  .h3-bold {
-    @apply text-[24px] font-bold;
+    @apply text-[24px] font-medium leading-[1.4];
   }
 
   .h4-regular {
-    @apply text-[18px] font-normal leading-[25.2px];
-  }
-
-  .h4-medium {
-    @apply text-[18px] font-medium;
+    @apply text-[18px] font-normal leading-[1.4];
   }
 
   .h4-bold {
-    @apply text-[18px] font-bold leading-[27px];
+    @apply text-[18px] font-bold leading-[1.4];
   }
 
   .h5-regular {
-    @apply text-[16px] font-normal leading-[24px];
+    @apply text-[16px] font-normal leading-[1.5];
   }
 
   .h5-medium {
-    @apply text-[16px] font-medium leading-[24px];
+    @apply text-[16px] font-medium leading-[1.5];
+  }
+
+  .h5-semibold {
+    @apply text-[16px] font-semibold leading-[1.5];
   }
 
   .h6-regular {
-    @apply text-[14px] font-normal leading-[19.6px];
+    @apply text-[14px] font-normal leading-[1.5];
   }
 
   .paragraph-regular {
-    @apply text-[16px] font-normal leading-[24px];
-  }
-
-  .paragraph-medium {
-    @apply text-[16px] font-medium;
+    @apply text-[16px] font-normal leading-[1.4];
   }
 
   .validation-error {
-    @apply text-[14px] font-normal text-error mr-0.5;
+    @apply h6-regular text-error pl-[10px];
   }
 
-  .border-radio-checkbox {
-    @apply border border-base-300 hover:ring hover:ring-base-300/20 disabled:border-gray-400 disabled:ring-0;
+  .input {
+    @apply bg-base-500 appearance-none outline-none border hover:border-base-400 rounded-sm h5-medium w-full pl-2.5 py-[5px] pr-[5px] text-base-100 active:border active:border-primary-200 active:shadow-input focus:border-primary-200 focus:shadow-input placeholder:text-base-200 placeholder:h5-regular;
+  }
+
+  .error-radio-checkbox {
+    @apply border-error shadow-lightError;
+  }
+
+  .base-radio-checkbox {
+    @apply border checked:border-primary-100 checked:shadow-none checked:bg-primary-100 checked:border-0 hover:shadow-radio hover:border-base-300;
+  }
+}
+
+@layer base {
+  a {
+    @apply h5-regular text-primary-100 hover:underline hover:underline-offset-4;
   }
 }

@@ -1,10 +1,11 @@
 import React, { Dispatch, SetStateAction } from "react";
 
-export type ButtonVariant = "primary" | "secondary";
+export type ButtonVariant = "primary" | "secondary" | "tertiary";
 
-export type ButtonSize = "default" | "sm";
+export type ButtonSize = "big" | "small";
 
 export interface ButtonOptions {
+  label?: string;
   size?: ButtonSize;
   variant?: ButtonVariant;
 }
@@ -117,7 +118,6 @@ export interface ReviewProps {
   discountedPrice: number;
   totalPrice: number;
   setShowReview: Dispatch<SetStateAction<boolean>>;
-  handleSubmit: () => void;
 }
 
 export interface GetManufacturerNameProps {

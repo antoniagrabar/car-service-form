@@ -4,24 +4,29 @@ import { ChangeEvent, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import Price from "./Price";
-
+import Price from "@/components/forms/serviceForm/Price";
 import Review from "@/components/Review";
 import Button from "@/components/shared/Button";
 import Checkbox from "@/components/shared/Checkbox";
-import { Input } from "@/components/shared/Input";
-import { Radio } from "@/components/shared/Radio";
-import { Textarea } from "@/components/shared/Textarea";
+import Input from "@/components/shared/Input";
+import Radio from "@/components/shared/Radio";
+import Textarea from "@/components/shared/Textarea";
 import Success from "@/components/Success";
 import {
   initialCouponData,
   initialValidationErrors,
   defaultFormValues,
 } from "@/constants";
+import { fetchData } from "@/lib/actions";
 import { getManufacturerName } from "@/lib/utils";
 import serviceFormSchema from "@/schemas/serviceFormSchema";
 import serviceIdsSchema from "@/schemas/serviceIdsSchema";
-import { ServiceFormValidationErrors, ServiceFormProps, Coupon } from "@/types";
+import {
+  ServiceFormValidationErrors,
+  ServiceFormProps,
+  Coupon,
+  FormValues,
+} from "@/types";
 
 const ServiceForm = ({ manufacturers, services }: ServiceFormProps) => {
   const [validationErrors, setValidationErrors] =
@@ -29,11 +34,11 @@ const ServiceForm = ({ manufacturers, services }: ServiceFormProps) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [discountedPrice, setDiscountedPrice] = useState(totalPrice);
   const [coupon, setCoupon] = useState<Coupon>(initialCouponData);
-  const [showReview, setShowReview] = useState<boolean>(false);
-  const [showSuccess, setShowSuccess] = useState<boolean>(false);
+  const [showReview, setShowReview] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [serviceIds, setServiceIds] = useState<string[]>([]);
 
-  const { register, getValues } = useForm({
+  const { register, getValues, handleSubmit } = useForm({
     defaultValues: defaultFormValues,
   });
 
@@ -81,37 +86,19 @@ const ServiceForm = ({ manufacturers, services }: ServiceFormProps) => {
     });
   };
 
-  const handleSubmit = async () => {
-    try {
-      const contact = {
-        manufacturerId: getValues().manufacturerId,
-        serviceIds,
-        fullName: getValues().fullName,
-        email: getValues().email,
-        phoneNumber: getValues().phoneNumber,
-        note: getValues().note,
-        promoCode: coupon.code,
-      };
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/contact`,
-        {
-          method: "POST",
-          headers: { "x-authentication-token": "borealis-fe-interview-token" },
-          body: JSON.stringify(contact),
-        }
-      );
+  const onSubmit = async (data: FormValues) => {
+    const contact = {
+      ...data,
+      serviceIds,
+      ...(coupon.code ? { promoCode: coupon.code } : {}),
+    };
 
-      const data = await res.json();
+    const resData = await fetchData("contact", "POST", contact);
 
-      if (res.ok) {
-        setShowSuccess(true);
-      } else {
-        setShowSuccess(false);
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
+    if (resData.message) {
       toast.error("Nešto je pošlo po krivu. Molimo pokušajte ponovo.");
+    } else {
+      setShowSuccess(true);
     }
   };
 
@@ -119,152 +106,171 @@ const ServiceForm = ({ manufacturers, services }: ServiceFormProps) => {
     setDiscountedPrice(value);
   }, []);
 
+  if (showSuccess) return <Success />;
+
   return (
-    <>
-      {showSuccess ? (
-        <Success />
-      ) : (
-        <div className="flex flex-col gap-5 pt-[40px] px-[30px] pb-5 w-[600px]">
-          <h2 className="h2-bold text-base-100">Konfigurator Servisa</h2>
+    <div className="flex flex-col gap-5 pt-[40px] px-[30px] pb-5 w-[600px]">
+      <h2 className="h2-bold text-base-100">Konfigurator Servisa</h2>
 
-          <form className="gap-[20px] flex flex-col">
-            {showReview ? (
-              <Review
-                manufacturerName={getManufacturerName({
-                  manufacturers,
-                  id: getValues().manufacturerId,
-                })}
-                services={services}
-                serviceIds={serviceIds}
-                formValues={getValues()}
-                promoCode={coupon.code}
-                discountPercentage={coupon.discountPercentage}
-                totalPrice={totalPrice}
-                discountedPrice={discountedPrice}
-                setShowReview={setShowReview}
-                handleSubmit={handleSubmit}
-              />
-            ) : (
-              <>
-                <h4 className="h4-bold text-primary-100">
-                  Odaberite proizvođača vašeg vozila
-                </h4>
-                <div className="grid grid-cols-3 gap-[10px]">
-                  {manufacturers.map((manufacturer) => (
-                    <Radio
-                      label={manufacturer.name}
-                      key={manufacturer.id}
-                      id={manufacturer.id}
-                      value={manufacturer.id}
-                      {...register("manufacturerId")}
-                    />
-                  ))}
-
-                  {validationErrors.manufacturerId &&
-                    validationErrors.manufacturerId.map((error, index) => (
-                      <span className="validation-error" key={index}>
-                        {error}
-                      </span>
-                    ))}
-                </div>
-
-                <h4 className="h4-bold text-primary-100">
-                  Odaberite jednu ili više usluga koju trebate
-                </h4>
-                <div className="grid grid-cols-2 gap-[10px]">
-                  {services.map((service) => (
-                    <Checkbox
-                      id={`service-${service.id}`}
-                      key={service.id}
-                      label={service.name}
-                      price={service.price}
-                      onChange={(e) =>
-                        handleCheckboxChange(e as ChangeEvent<HTMLInputElement>)
-                      }
-                      defaultChecked={serviceIds.includes(service.id)}
-                    />
-                  ))}
-                  {validationErrors.serviceIds &&
-                    validationErrors.serviceIds.map((error, index) => (
-                      <span className="validation-error" key={index}>
-                        {error}
-                      </span>
-                    ))}
-                </div>
-
-                <Price
-                  totalPrice={totalPrice}
-                  discountedPrice={discountedPrice}
-                  setDiscountedPrice={updateDiscountedPrice}
-                  coupon={coupon}
-                  setCoupon={setCoupon}
+      <form
+        className="gap-[20px] flex flex-col"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {showReview ? (
+          <Review
+            manufacturerName={getManufacturerName({
+              manufacturers,
+              id: getValues().manufacturerId,
+            })}
+            services={services}
+            serviceIds={serviceIds}
+            formValues={getValues()}
+            promoCode={coupon.code}
+            discountPercentage={coupon.discountPercentage}
+            totalPrice={totalPrice}
+            discountedPrice={discountedPrice}
+            setShowReview={setShowReview}
+          />
+        ) : (
+          <>
+            <h4 className="h4-bold text-primary-100">
+              Odaberite proizvođača vašeg vozila
+            </h4>
+            <div className="grid grid-cols-3 gap-[10px]">
+              {manufacturers.map((manufacturer) => (
+                <Radio
+                  label={manufacturer.name}
+                  key={manufacturer.id}
+                  id={manufacturer.id}
+                  value={manufacturer.id}
+                  className={
+                    validationErrors.manufacturerId.length > 0
+                      ? "error-radio-checkbox"
+                      : ""
+                  }
+                  {...register("manufacturerId")}
                 />
-
-                <h4 className="h4-bold text-primary-100">Vaši podaci</h4>
-                <div className="grid grid-cols-2 w-full gap-5">
-                  <div>
-                    <Input
-                      label="Ime i prezime"
-                      id="fullName"
-                      {...register("fullName")}
-                    />
-
-                    {validationErrors.fullName &&
-                      validationErrors.fullName.map((error, index) => (
-                        <span className="validation-error" key={index}>
-                          {error}
-                        </span>
-                      ))}
-                  </div>
-
-                  <div>
-                    <Input
-                      label="Broj telefona"
-                      id="phoneNumber"
-                      {...register("phoneNumber")}
-                    />
-                    {validationErrors.phoneNumber &&
-                      validationErrors.phoneNumber.map((error, index) => (
-                        <span className="validation-error" key={index}>
-                          {error}
-                        </span>
-                      ))}
-                  </div>
+              ))}
+              {validationErrors.manufacturerId.map((error, index) => (
+                <div className="validation-error" key={index}>
+                  {error}
                 </div>
+              ))}
+            </div>
 
-                <div>
-                  <Input
-                    label="Email adresa"
-                    id="email"
-                    {...register("email")}
-                  />
-                  {validationErrors.email &&
-                    validationErrors.email.map((error, index) => (
-                      <span className="validation-error" key={index}>
-                        {error}
-                      </span>
-                    ))}
-                </div>
+            <h4 className="h4-bold text-primary-100">
+              Odaberite jednu ili više usluga koju trebate
+            </h4>
+            <div className="grid grid-cols-2 gap-[10px]">
+              {services.map((service) => (
+                <Checkbox
+                  id={`service-${service.id}`}
+                  key={service.id}
+                  label={service.name}
+                  price={service.price}
+                  className={
+                    validationErrors.serviceIds.length > 0
+                      ? "error-radio-checkbox"
+                      : ""
+                  }
+                  onChange={(e) =>
+                    handleCheckboxChange(e as ChangeEvent<HTMLInputElement>)
+                  }
+                  defaultChecked={serviceIds.includes(service.id)}
+                />
+              ))}
+              {validationErrors.serviceIds.map((error, index) => (
+                <h6 className="validation-error" key={index}>
+                  {error}
+                </h6>
+              ))}
+            </div>
 
-                <div>
-                  <Textarea
-                    label="Napomena (opcionalno)"
-                    id="note"
-                    rows={3}
-                    className="resize-none"
-                    {...register("note")}
-                  />
-                </div>
+            <Price
+              totalPrice={totalPrice}
+              discountedPrice={discountedPrice}
+              setDiscountedPrice={updateDiscountedPrice}
+              coupon={coupon}
+              setCoupon={setCoupon}
+            />
 
-                <Button onClick={() => handleNextButton()}>
-                  <h4 className="h4-regular text-base-600">Dalje</h4>
-                </Button>
-              </>
-            )}
-          </form>
-        </div>
-      )}
-    </>
+            <h4 className="h4-bold text-primary-100">Vaši podaci</h4>
+            <div className="grid grid-cols-2 w-full gap-5">
+              <div>
+                <Input
+                  label="Ime i prezime"
+                  id="fullName"
+                  placeholder="Unesite ime i prezime"
+                  className={
+                    validationErrors.fullName.length > 0 ? "border-error" : ""
+                  }
+                  {...register("fullName")}
+                />
+                {validationErrors.fullName.map((error, index) => (
+                  <h6 className="validation-error" key={index}>
+                    {error}
+                  </h6>
+                ))}
+              </div>
+
+              <div>
+                <Input
+                  label="Broj telefona"
+                  id="phoneNumber"
+                  placeholder="Unesite broj telefona"
+                  className={
+                    validationErrors.phoneNumber.length > 0
+                      ? "border-error"
+                      : ""
+                  }
+                  {...register("phoneNumber")}
+                />
+                {validationErrors.phoneNumber.map((error, index) => (
+                  <h6 className="validation-error" key={index}>
+                    {error}
+                  </h6>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <Input
+                label="Email adresa"
+                id="email"
+                placeholder="Unesite email adresu"
+                className={
+                  validationErrors.email.length > 0 ? "border-error" : ""
+                }
+                {...register("email")}
+              />
+              {validationErrors.email.map((error, index) => (
+                <h6 className="validation-error" key={index}>
+                  {error}
+                </h6>
+              ))}
+            </div>
+
+            <div>
+              <Textarea
+                label="Napomena (opcionalno)"
+                id="note"
+                rows={2}
+                className={`resize-none ${validationErrors.note.length > 0 ? "border-error" : ""}`}
+                placeholder="Unesite napomenu"
+                {...register("note")}
+              />
+              {validationErrors.note.map((error, index) => (
+                <h6 className="validation-error" key={index}>
+                  {error}
+                </h6>
+              ))}
+            </div>
+
+            <Button label="Dalje" onClick={handleNextButton} />
+          </>
+        )}
+      </form>
+    </div>
   );
 };
 

@@ -1,9 +1,11 @@
 import ServiceForm from "@/components/forms/serviceForm/ServiceForm";
-import { getManufacturers, getServices } from "@/lib/actions";
+import { fetchData } from "@/lib/actions";
 
-const page = async () => {
-  const manufacturers = await getManufacturers();
-  const services = await getServices();
+const Konfigurator = async () => {
+  const [manufacturers, services] = await Promise.all([
+    fetchData("manufacturers"),
+    fetchData("services"),
+  ]);
 
   return (
     <div className="flex items-center justify-center">
@@ -12,4 +14,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default Konfigurator;

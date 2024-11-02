@@ -9,17 +9,17 @@ const Checkbox = ({
   disabled,
   defaultChecked,
   onChange,
+  className,
   ...props
 }: CheckboxProps) => (
-  <div className="w-full flex gap-2 items-center">
+  <div
+    className={`${disabled ? "opacity-50" : ""} w-full flex gap-2 items-center`}
+  >
     <div className="relative">
       <input
         id={id}
-        className="
-          peer relative shrink-0 appearance-none w-4 h-4 rounded-sm bg-white 
-          focus:outline-none border-radio-checkbox checked:bg-primary-100 
-          checked:border-0 disabled:bg-gray-300 
-        "
+        className={`${className} base-radio-checkbox peer relative shrink-0 appearance-none w-4 h-4 rounded-sm bg-white 
+          focus:outline-none border border-base-300 `}
         type="checkbox"
         defaultChecked={defaultChecked}
         disabled={disabled}

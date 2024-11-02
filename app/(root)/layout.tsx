@@ -17,7 +17,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         }}
       />
       <Navbar />
-      <div className="mx-auto w-full bg-light-100">{children}</div>
+      <div className="mx-auto w-full bg-bg-100">{children}</div>
     </main>
   );
 };

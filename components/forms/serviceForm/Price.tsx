@@ -2,12 +2,11 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
 
-import { Badge } from "../../shared/Badge";
-import Button from "../../shared/Button";
-import { Input } from "../../shared/Input";
-
+import Badge from "@/components/shared/Badge";
+import Button from "@/components/shared/Button";
+import Input from "@/components/shared/Input";
+import { fetchData } from "@/lib/actions";
 import { formatPrice } from "@/lib/utils";
 import { PriceProps } from "@/types";
 
@@ -32,30 +31,18 @@ const Price = ({
 
   const checkCouponValidity = async () => {
     const code = couponInputRef.current?.value;
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/validate-promo-code/${code}`,
-        {
-          method: "POST",
-          headers: { "x-authentication-token": "borealis-fe-interview-token" },
-        }
-      );
 
-      const data = await res.json();
+    const data = await fetchData(`validate-promo-code/${code}`, "POST");
 
-      if (res.ok) {
-        setCouponError("");
-        setCoupon({
-          ...data,
-          showInput: true,
-        });
-        couponInputRef!.current!.value = ""; // Reset input value
-      } else {
-        setCouponError(data.cause);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Nešto je pošlo po krivu. Molimo pokušajte ponovo.");
+    if (data.message) {
+      setCouponError(data.message);
+    } else {
+      setCouponError("");
+      setCoupon({
+        ...data,
+        showInput: true,
+      });
+      couponInputRef!.current!.value = "";
     }
   };
 
@@ -70,7 +57,7 @@ const Price = ({
   };
 
   return (
-    <div className="bg-light-200 flex justify-between py-2.5 px-[15px]">
+    <div className="bg-bg-200 flex justify-between py-2.5 px-[15px]">
       <div className="flex gap-2.5">
         <h4 className="h4-regular">ukupno: </h4>
         <h4 className="h4-bold text-primary-100">
@@ -82,10 +69,10 @@ const Price = ({
           <div className="flex gap-[10px]">
             <Input
               ref={couponInputRef}
-              className="w-[155px]"
+              className={`${couponError ? "border-error" : ""} w-[155px]`}
               placeholder="Unesi kod"
             />
-            <Button size="sm" onClick={() => checkCouponValidity()}>
+            <Button className="px-[5px]" onClick={checkCouponValidity}>
               <Image
                 src={"/vectors/check-icon-2.svg"}
                 width={24}
@@ -101,7 +88,7 @@ const Price = ({
             <Badge
               key={coupon.id}
               className="flex gap-[5px] pr-[5px] mt-[10px]"
-              onClick={() => handleCouponRemove()}
+              onClick={handleCouponRemove}
             >
               <h6 className="h6-regular">{coupon?.code}</h6>
               <Image

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import React from "react";
+import { ReactNode } from "react";
 
 import "./globals.css";
 
@@ -15,14 +15,12 @@ export const metadata: Metadata = {
   description: "Izračunajte trošak servisa",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <body className={`${satoshi.variable} antialiased`}>{children}</body>
     </html>
   );
-}
+};
+
+export default RootLayout;

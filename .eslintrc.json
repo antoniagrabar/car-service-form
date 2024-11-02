@@ -36,5 +36,8 @@
         "warnOnUnassignedImports": true
       }
     ]
+  },
+  "globals": {
+    "RequestInit": true
   }
 }

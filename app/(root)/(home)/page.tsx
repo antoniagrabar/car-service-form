@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import Button from "@/components/shared/Button";
+import ROUTES from "@/constants/routes";
 
-const page = () => {
+const Home = () => {
   return (
     <div className="m-auto flex items-center justify-center max-2xl:h-[calc(100vh-120px)]">
       <div className="flex w-[600px] flex-col items-center justify-center gap-5 2xl:pt-[314px]">
@@ -18,14 +19,12 @@ const page = () => {
           Pošaljite upit za servis svog vozila pomoću našeg konfiguratora i naš
           stručan tim će vam se javiti u najkraćem mogućem roku.
         </h4>
-        <Link href={"/konfigurator"}>
-          <Button>
-            <h4 className="h4-regular">Pokreni konfigurator</h4>
-          </Button>
+        <Link href={ROUTES.KONFIGURATOR}>
+          <Button label="Pokreni konfigurator" />
         </Link>
       </div>
     </div>
   );
 };
 
-export default page;
+export default Home;

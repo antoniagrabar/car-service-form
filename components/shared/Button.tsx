@@ -1,40 +1,44 @@
 import React, { forwardRef } from "react";
 
-import { ButtonProps, Ref, ButtonVariant, ButtonSize } from "@/types";
+import { ButtonProps, Ref, ButtonVariant } from "@/types";
 
 const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
   const {
     variant = "primary",
-    size = "default",
+    size = "small",
     type = "button",
+    label,
     className,
     children,
     ...rest
   } = props;
 
-  const getButtonClasses = (variant: ButtonVariant, size: ButtonSize) => {
+  const getButtonClasses = (variant: ButtonVariant) => {
     const variantClasses = {
       primary:
-        "bg-primary-100 text-base-600 rounded-sm gap-[5px] border-none hover:bg-primary-200 focus:bg-primary-200",
+        "bg-primary-100 text-base-600 gap-[5px] border-none hover:bg-primary-200 focus:bg-primary-200",
       secondary:
-        "bg-transparent text-base-100 rounded-sm gap-[10px] border border-base-200 hover:bg-base-500 focus:bg-base-500",
+        "bg-base-600 text-base-100 gap-[10px] border border-base-200 hover:bg-base-500 focus:bg-base-500",
+      tertiary:
+        "bg-base-600 border-none text-base-100 hover:bg-base-500 focus:bg-base-500",
     };
 
-    const sizeClasses = {
-      default: "py-[5px] px-[15px]",
-      sm: "p-[5px]",
-    };
-
-    return `${variantClasses[variant]} ${sizeClasses[size]}`;
+    return `${variantClasses[variant]}`;
   };
 
   return (
     <button
       ref={ref}
       type={type}
-      className={`${getButtonClasses(variant, size)} ${className}`}
+      className={`px-[15px] py-[5px] rounded-sm disabled:bg-base-400 disabled:text-base-300 ${getButtonClasses(variant)} ${className}`}
       {...rest}
     >
+      {label &&
+        (size === "big" ? (
+          <h3 className="h3-regular">{label}</h3>
+        ) : (
+          <h4 className="h4-regular">{label}</h4>
+        ))}
       {children}
     </button>
   );

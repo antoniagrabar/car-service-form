@@ -1,6 +1,12 @@
 import React, { forwardRef } from "react";
 
-import { RadioProps } from "@/types";
+interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  id: string;
+  label: string;
+  disabled?: boolean;
+  name?: string;
+  value?: string;
+}
 
 const Radio = forwardRef<HTMLInputElement, RadioProps>(
   ({ id, label, disabled, className, ...props }, ref) => {

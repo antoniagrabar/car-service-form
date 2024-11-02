@@ -1,8 +1,22 @@
-import React from "react";
+"use client";
+
+import { Dispatch, SetStateAction } from "react";
 
 import Button from "@/components/shared/Button";
 import { formatPrice } from "@/lib/utils";
-import { ReviewProps } from "@/types";
+import { FormValues, Service } from "@/types";
+
+interface Props {
+  formValues: FormValues;
+  manufacturerName: string;
+  services: Service[];
+  serviceIds: string[];
+  promoCode: string;
+  discountPercentage: number;
+  discountedPrice: number;
+  totalPrice: number;
+  setShowReview: Dispatch<SetStateAction<boolean>>;
+}
 
 const Review = ({
   formValues,
@@ -14,7 +28,7 @@ const Review = ({
   totalPrice,
   promoCode,
   setShowReview,
-}: ReviewProps) => {
+}: Props) => {
   const contactFields = [
     { label: "Ime i prezime:", value: formValues.fullName },
     { label: "Email adresa:", value: formValues.email },
@@ -35,6 +49,7 @@ const Review = ({
           servis pritisnite gumb “Pošalji”.
         </h5>
       </div>
+
       <div className="bg-bg-200 p-5 rounded-md flex flex-col gap-[15px]">
         <div className="flex flex-col gap-[5px]">
           <h4 className="h4-bold text-primary-100">Model vozila</h4>
@@ -56,7 +71,8 @@ const Review = ({
                 </div>
               )
           )}
-          {promoCode ? (
+
+          {promoCode && (
             <div className="flex justify-end gap-[20px] pt-[5px] px-[5px]">
               <h5 className="h5-regular text-base-200">
                 Popust {discountPercentage}%:
@@ -65,9 +81,8 @@ const Review = ({
                 -{formatPrice(totalPrice - discountedPrice)}
               </h5>
             </div>
-          ) : (
-            <></>
           )}
+
           <div className="flex justify-end gap-[20px] pt-[5px] px-[5px]">
             <h5 className="h5-regular text-base-200">Ukupno:</h5>
             <h5 className="h5-medium text-primary-100">

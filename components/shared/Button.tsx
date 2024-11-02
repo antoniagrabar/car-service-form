@@ -1,6 +1,10 @@
 import React, { forwardRef } from "react";
 
-import { ButtonProps, Ref, ButtonVariant } from "@/types";
+import { Ref, ButtonVariant, ButtonOptions } from "@/types";
+
+interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    ButtonOptions {}
 
 const Button = forwardRef<Ref, ButtonProps>((props, ref) => {
   const {

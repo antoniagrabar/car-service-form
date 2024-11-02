@@ -1,4 +1,9 @@
-import { GetManufacturerNameProps } from "@/types";
+import { Manufacturer } from "@/types";
+
+interface GetManufacturerNameProps {
+  manufacturers: Manufacturer[];
+  id: string;
+}
 
 export const getManufacturerName = ({
   manufacturers,

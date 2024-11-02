@@ -1,14 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import Badge from "@/components/shared/Badge";
 import Button from "@/components/shared/Button";
 import Input from "@/components/shared/Input";
 import { fetchData } from "@/lib/actions";
 import { formatPrice } from "@/lib/utils";
-import { PriceProps } from "@/types";
+import { Coupon } from "@/types";
+
+interface Props {
+  totalPrice: number;
+  discountedPrice: number;
+  setDiscountedPrice: (value: number) => void;
+  coupon: Coupon;
+  setCoupon: Dispatch<SetStateAction<Coupon>>;
+}
 
 const Price = ({
   totalPrice,
@@ -16,7 +31,7 @@ const Price = ({
   setDiscountedPrice,
   coupon,
   setCoupon,
-}: PriceProps) => {
+}: Props) => {
   const [couponError, setCouponError] = useState<string>();
   const couponInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +44,7 @@ const Price = ({
     setDiscountedPrice(finalPrice);
   }, [totalPrice, coupon.discountPercentage, setDiscountedPrice]);
 
-  const checkCouponValidity = async () => {
+  const checkCouponValidity = useCallback(async () => {
     const code = couponInputRef.current?.value;
 
     const data = await fetchData(`validate-promo-code/${code}`, "POST");
@@ -44,9 +59,9 @@ const Price = ({
       });
       couponInputRef!.current!.value = "";
     }
-  };
+  }, [setCoupon]);
 
-  const handleCouponRemove = () => {
+  const handleCouponRemove = useCallback(() => {
     setCoupon((prev) => ({
       ...prev,
       id: "",
@@ -54,7 +69,14 @@ const Price = ({
       discountPercentage: 0,
     }));
     setDiscountedPrice(totalPrice);
-  };
+  }, [setCoupon, setDiscountedPrice, totalPrice]);
+
+  const handleShowInput = useCallback(() => {
+    setCoupon((prevCoupon) => ({
+      ...prevCoupon,
+      showInput: true,
+    }));
+  }, [setCoupon]);
 
   return (
     <div className="bg-bg-200 flex justify-between py-2.5 px-[15px]">
@@ -81,16 +103,14 @@ const Price = ({
               />
             </Button>
           </div>
-          {couponError !== "" && (
-            <div className="validation-error">{couponError}</div>
-          )}
-          {coupon && coupon.code !== "" && (
+          {couponError && <div className="validation-error">{couponError}</div>}
+          {coupon.code && (
             <Badge
               key={coupon.id}
               className="flex gap-[5px] pr-[5px] mt-[10px]"
               onClick={handleCouponRemove}
             >
-              <h6 className="h6-regular">{coupon?.code}</h6>
+              <h6 className="h6-regular">{coupon.code}</h6>
               <Image
                 src={"/vectors/close-icon.svg"}
                 width={20}
@@ -104,12 +124,7 @@ const Price = ({
       ) : (
         <h5
           className="h5-regular text-primary-100 cursor-pointer"
-          onClick={() =>
-            setCoupon((prevCoupon) => ({
-              ...prevCoupon,
-              showInput: true,
-            }))
-          }
+          onClick={handleShowInput}
         >
           Imam kupon
         </h5>

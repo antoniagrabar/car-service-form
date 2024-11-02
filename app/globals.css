@@ -68,7 +68,7 @@ body {
   }
 
   .base-radio-checkbox {
-    @apply border checked:border-primary-100 checked:shadow-none checked:bg-primary-100 checked:border-0 hover:shadow-radio hover:border-base-300;
+    @apply border checked:border-primary-100 checked:shadow-none hover:shadow-radio hover:border-base-300;
   }
 }
 

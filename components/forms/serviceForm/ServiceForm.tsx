@@ -23,12 +23,18 @@ import serviceFormSchema from "@/schemas/serviceFormSchema";
 import serviceIdsSchema from "@/schemas/serviceIdsSchema";
 import {
   ServiceFormValidationErrors,
-  ServiceFormProps,
+  Manufacturer,
+  Service,
   Coupon,
   FormValues,
 } from "@/types";
 
-const ServiceForm = ({ manufacturers, services }: ServiceFormProps) => {
+interface Props {
+  manufacturers: Manufacturer[];
+  services: Service[];
+}
+
+const ServiceForm = ({ manufacturers, services }: Props) => {
   const [validationErrors, setValidationErrors] =
     useState<ServiceFormValidationErrors>(initialValidationErrors);
   const [totalPrice, setTotalPrice] = useState(0);

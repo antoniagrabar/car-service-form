@@ -1,6 +1,14 @@
 import Image from "next/image";
+import { FormEvent, InputHTMLAttributes } from "react";
 
-import { CheckboxProps } from "@/types";
+interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
+  id: string;
+  label: string;
+  price?: number;
+  disabled?: boolean;
+  defaultChecked?: boolean;
+  onChange?: (event: FormEvent<HTMLInputElement>) => void;
+}
 
 const Checkbox = ({
   id,
@@ -19,7 +27,7 @@ const Checkbox = ({
       <input
         id={id}
         className={`${className} base-radio-checkbox peer relative shrink-0 appearance-none w-4 h-4 rounded-sm bg-white 
-          focus:outline-none border border-base-300 `}
+          focus:outline-none border checked:bg-primary-100 border-base-300 `}
         type="checkbox"
         defaultChecked={defaultChecked}
         disabled={disabled}
